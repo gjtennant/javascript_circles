@@ -1,0 +1,95 @@
+<html>
+<head>
+	<title>Flashing Dots</title>
+	 <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+	<style type="text/css">
+	p{
+		padding:0px;
+		margin:0px 0px 0px 50px;
+	}
+	#Cali{
+		padding:0px;
+		margin:0px;
+		display:inline-block;
+	}
+	</style>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		// var canvas = document.getElementById('Houston');
+		// var pen = canvas.getContext('2d');
+		// pen.beginPath();
+		// // the args for .arc are (x_val, y_val, radius, start_angle, end_angle) note: start and end angle are in radians!
+		// pen.arc(150,50,30,0,2*Math.PI);
+		// pen.stroke()
+
+
+
+		function Circle(html_id, cx, cy, r)
+		{
+			this.info = {id: html_id, cx: cx, cy: cy, r: r} 
+
+
+			//this function makes a new circle element within our SVG tag!
+			this.makeSVGcircle = function(){
+				var svg = document.getElementById('Cali');
+				var circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+				//grab all of the info I need for setting the properties of the SVG circle element!
+				var obj = this.info
+		        for (var k in obj)
+		        {
+		            circle.setAttribute(k, obj[k]);
+		        }
+		       svg.appendChild(circle)
+			}
+		}
+
+		var Circles = [];
+		var num_of_circles = 0
+
+		document.onclick = function(e)
+		{
+			console.log(e)
+			//the above code logs info about the event that triggered the listener
+			num_of_circles ++;
+			//make a new JS object that will contain properties of the SVG circle we will shortly instantiate
+			var circle_object = new Circle(num_of_circles, e.x, e.y, 27)
+			//use the method of the JS object to make an HTML element
+			circle_object.makeSVGcircle();
+			Circles.push(circle_object);
+		}
+
+		//loop through my circles and make those suckers change!
+		function loop()
+		{
+			for(x in Circles)
+			{
+				//grab the HTML element using the JS object property.  This is CRUCIAL TO UNDERSTAND HOW (and WHY) THIS WORKS!
+				var html_circle = document.getElementById(Circles[x].info.id)  //corresponds to the id attr of HTML circle using JS object prop
+				html_circle.setAttribute("style", "fill: rgb("+color()+")");
+			}
+		}
+
+		function color()
+		{
+			var red = Math.floor(Math.random()*255);
+			var green = Math.floor(Math.random()*255);
+			var blue = Math.floor(Math.random()*255);
+			return red +", "+green+", "+blue 
+		}
+
+		setInterval(function(){loop()}, 300) 
+	})
+
+
+		
+	</script>
+</head>
+<body>
+	<!-- <canvas id="Houston" width='600' height='600'></canvas> -->
+	<p>click...</p>
+	<svg id='Cali'>
+		<!-- <circle r='4', cx='6', cy='6' fill='red' ></circle> -->
+	</svg>
+
+</body>
+</html>
